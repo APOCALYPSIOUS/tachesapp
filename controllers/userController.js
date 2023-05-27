@@ -94,12 +94,15 @@ const updateUser =async (req,res)=>{
     }
 }
 
-const getUserById =async (req,res)=>{
-    try{
-        const user = await User.findById(req.params.id);
+
+
+
+const getMe =async (req,res)=>{
+    try {
+        const user = await User.findById(req.user.id);
         res.json(user);
     }catch (err) {
-        res.status(500).json({message: "err.message"});
+        res.status(500).json({message: "no user"});
     }
 }
 
@@ -108,6 +111,6 @@ module.exports = {
     register,
     deleteUser,
     updateUser,
-    getUserById,
+    getMe,
     logIn
 }

@@ -1,15 +1,23 @@
 var express = require('express');
 var router = express.Router();
 const Todo = require("../model/Task");
-const {getTasks,addTask,deleteTask,updateTask} = require("../controllers/TaskController");
+const {getTasks,addTask,deleteTask,updateTask, uncompletedTasks, completedTasks, completeTask} = require("../controllers/TaskController");
+const {auth} = require("../middleware/authMiddleware");
 
-router.get('/',getTasks);
 
-router.post('/',addTask);
+router.get('/',auth,getTasks);
 
-router.delete('/:id',deleteTask);
+router.post('/',auth,addTask);
 
-router.put('/:id',updateTask);
+router.delete('/:id',auth,deleteTask);
+
+router.put('/:id',auth,updateTask);
+
+router.get('/uncompleted',auth,uncompletedTasks);
+
+router.get('/completed',auth,completedTasks);
+
+router.put('/complete/:id',auth,completeTask);
 
 module.exports = router;
 
