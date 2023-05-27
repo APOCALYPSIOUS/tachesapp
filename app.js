@@ -8,7 +8,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('port', 3000);
 
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/UserRoutes');
+const todoRouter = require('./routes/TaskRoutes');
+
+app.use('/todos', todoRouter);
+
 app.use('/users', usersRouter);
 
 
