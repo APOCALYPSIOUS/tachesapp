@@ -3,7 +3,8 @@ var router = express.Router();
 const Todo = require("../model/Task");
 const {getTasks,addTask,deleteTask,updateTask, uncompletedTasks, completedTasks, completeTask,getSortedByDateAscTask,getSortedByDateDescTask,
     getSortedByTitleAscTask,
-    getSortedByTitleDescTask
+    getSortedByTitleDescTask,
+    searchTasks
 } = require("../controllers/TaskController");
 const {auth} = require("../middleware/authMiddleware");
 
@@ -19,6 +20,8 @@ router.get('/titlesortdesc',auth,getSortedByTitleDescTask);
 router.get('/limitDatesortasc',auth,getSortedByDateAscTask);
 
 router.get('/limitDatesortdesc',auth,getSortedByDateDescTask);
+
+router.get('/search',auth,searchTasks);
 
 router.delete('/:id',auth,deleteTask);
 
