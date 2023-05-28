@@ -8,6 +8,50 @@ const getTasks = async (req,res)=> {
         res.status(500).json({message: "err.message"});
     }
 }
+const getSortedByTitleAscTask = async (req,res)=> {
+    try {
+        const todos = await Todo.find({userId: req.user.id}).sort({title: 1});
+        res.json(todos);
+    } catch (err) {
+        res.status(500).json({message: "err.message"});
+    }
+
+}
+const getSortedByTitleDescTask = async (req,res)=> {
+    try {
+        const todos = await Todo.find({userId: req.user.id}).sort({title: -1});
+        res.json(todos);
+    } catch (err) {
+        res.status(500).json({message: "err.message"});
+    }
+}
+const getSortedByDateAscTask = async (req,res)=> {
+    try {
+        const todos = await Todo.find({userId: req.user.id}).sort({updatedAt: 1});
+        res.json(todos);
+    } catch (err) {
+        res.status(500).json({message: "err.message"});
+    }
+}
+
+const getSortedByDateDescTask = async (req,res)=> {
+    try {
+        const todos = await Todo.find({userId: req.user.id}).sort({updatedAt: -1});
+        res.json(todos);
+    } catch (err) {
+        res.status(500).json({message: "err.message"});
+    }
+}
+
+
+const getPaginatedTasks = async (req,res)=> {
+    try {
+        const todos = await Todo.find({userId: req.user.id}).limit(10);
+        res.json(todos);
+    } catch (err) {
+        res.status(500).json({message: "err.message"});
+    }
+}
 const addTask = async (req,res)=> {
     const todo = new Todo({
         title: req.body.title,
@@ -116,5 +160,9 @@ module.exports = {
     deleteTask,
     completedTasks,
     uncompletedTasks,
-    completeTask
+    completeTask,
+    getSortedByTitleAscTask,
+    getSortedByDateAscTask,
+    getSortedByDateDescTask,
+    getSortedByTitleDescTask,
 }
