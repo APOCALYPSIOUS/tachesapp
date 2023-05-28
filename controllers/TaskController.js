@@ -8,6 +8,22 @@ const getTasks = async (req,res)=> {
         res.status(500).json({message: "err.message"});
     }
 }
+const searchTasks = async (req, res) => {
+    try {
+        const searchTerm = req.query.term;
+        const query = { userId: req.user.id };
+
+
+        if (searchTerm) {
+            query.title = { $regex: searchTerm, $options: 'i' };
+        }
+
+        const todos = await Todo.find(query);
+        res.json(todos);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
 const getSortedByTitleAscTask = async (req,res)=> {
     try {
         const todos = await Todo.find({userId: req.user.id}).sort({title: 1});
@@ -167,4 +183,5 @@ module.exports = {
     getSortedByDateAscTask,
     getSortedByDateDescTask,
     getSortedByTitleDescTask,
+    searchTasks,
 }
