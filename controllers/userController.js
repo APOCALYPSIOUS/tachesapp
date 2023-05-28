@@ -83,12 +83,15 @@ const deleteUser =async (req,res)=>{
 
 const updateUser =async (req,res)=>{
     try{
+        console.log(req.body);
+        const hashedpassword = await sha256(req.body.password);
         const user = await User.findByIdAndUpdate(req.params.id,{
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: hashedpassword
         })
-        res.json(user);
+        const u = await User.findById(req.params.id);
+        res.json(u);
     }catch (err) {
         res.status(500).json({message: "err.message"});
     }
