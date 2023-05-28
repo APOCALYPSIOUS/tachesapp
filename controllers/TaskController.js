@@ -1,7 +1,8 @@
 const Todo = require("../model/Task");
+const User = require("../model/User");
 const getTasks = async (req,res)=> {
     try {
-        const todos = await Todo.find({userId: req.user._id});
+        const todos = await Todo.find({userId: req.user.id});
         res.json(todos);
     } catch (err) {
         res.status(500).json({message: "err.message"});
@@ -12,7 +13,7 @@ const addTask = async (req,res)=> {
         title: req.body.title,
         description: req.body.description,
         completed: req.body.completed,
-        userId: req.user._id,
+        userId: req.user.id,
     })
     try {
         const newTodo = await todo.save();
@@ -24,7 +25,17 @@ const addTask = async (req,res)=> {
 
 const deleteTask = async (req,res)=>{
     try{
-        const todo = await Todo.findOneAndDelete({userId:req.user._id,id:req.params.id});
+        const todo = await Todo.findById(req.params.id);
+        const user = await User.findById(req.user.id);
+        if(!user){
+            res.status(404).json({message: "user not found"});
+            throw new Error("user not found");
+        }
+        if(todo.userId.toString() !== req.user.id.toString()){
+            res.status(401).json({message: "unauthorized"});
+            throw new Error("unauthorized");
+        }
+        const updatedTodo = await Todo.findByIdAndDelete(req.params.id);
         res.json(todo);
     }catch (err) {
         res.status(500).json({message: "err.message"});
@@ -33,12 +44,24 @@ const deleteTask = async (req,res)=>{
 
 const updateTask = async (req,res)=>{
     try{
-        const todo = await Todo.findOneAndUpdate({userId:req.user._id,id:req.params.id},{
+        const todo = await Todo.findById(req.params.id);
+        const user = await User.findById(req.user.id);
+        if(!user){
+            res.status(404).json({message: "user not found"});
+            throw new Error("user not found");
+        }
+        if(todo.userId.toString() !== req.user.id.toString()){
+            res.status(401).json({message: "unauthorized"});
+            throw new Error("unauthorized");
+        }
+
+        const updatedTodo = await Todo.findByIdAndUpdate(req.params.id,{
             title: req.body.title,
             description: req.body.description,
             completed: req.body.completed,
         })
-        res.json(todo);
+
+        res.json(updatedTodo);
     }catch (err) {
         res.status(500).json({message: "err.message"});
     }
@@ -46,7 +69,8 @@ const updateTask = async (req,res)=>{
 
 const completedTasks = async (req,res)=>{
     try{
-        const todo = await Todo.find({userId: req.user._id, completed: true});
+
+        const todo = await Todo.find({userId: req.user.id, completed: true});
         res.json(todo);
     }catch (err) {
         res.status(500).json({message: "err.message"});
@@ -56,7 +80,7 @@ const completedTasks = async (req,res)=>{
 
 const uncompletedTasks = async (req,res)=>{
     try{
-        const todo = await Todo.find({userId: req.user._id, completed: false});
+        const todo = await Todo.find({userId: req.user.id, completed: false});
         res.json(todo);
     }catch (err) {
         res.status(500).json({message: "err.message"});
@@ -65,10 +89,20 @@ const uncompletedTasks = async (req,res)=>{
 
 const completeTask = async (req,res)=>{
     try{
-        const todo = await Todo.findOneAndUpdate({userId:req.user._id,id:req.params.id},{
+        const todo = await Todo.findById(req.params.id);
+        const user = await User.findById(req.user.id);
+        if(!user){
+            res.status(404).json({message: "user not found"});
+            throw new Error("user not found");
+        }
+        if(todo.userId.toString() !== req.user.id.toString()){
+            res.status(401).json({message: "unauthorized"});
+            throw new Error("unauthorized");
+        }
+        const updatedTodo = await Todo.findByIdAndUpdate(req.params.id,{
             completed: true,
         })
-        res.json(todo);
+        res.json(updatedTodo);
     }catch (err) {
         res.status(500).json({message: "err.message"});
     }

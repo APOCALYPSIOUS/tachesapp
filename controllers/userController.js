@@ -47,11 +47,11 @@ const register =async (req,res)=> {
 }
 
 const logIn =  async (req,res)=>{
-    if(!req.body.name ||! req.body.password){
+    if(!req.body.email ||! req.body.password){
         res.status(400).json({message: "Please enter name and passowrd"});
     }
     try{
-        const nameExists = await User.findOne({name: req.body.name});
+        const nameExists = await User.findOne({email: req.body.email});
 
         const hashedpassword = await sha256(req.body.password);
 
