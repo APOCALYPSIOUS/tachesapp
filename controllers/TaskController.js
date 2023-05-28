@@ -27,7 +27,7 @@ const getSortedByTitleDescTask = async (req,res)=> {
 }
 const getSortedByDateAscTask = async (req,res)=> {
     try {
-        const todos = await Todo.find({userId: req.user.id}).sort({updatedAt: 1});
+        const todos = await Todo.find({userId: req.user.id}).sort({limitDate: 1});
         res.json(todos);
     } catch (err) {
         res.status(500).json({message: "err.message"});
@@ -36,7 +36,7 @@ const getSortedByDateAscTask = async (req,res)=> {
 
 const getSortedByDateDescTask = async (req,res)=> {
     try {
-        const todos = await Todo.find({userId: req.user.id}).sort({updatedAt: -1});
+        const todos = await Todo.find({userId: req.user.id}).sort({limitDate: -1});
         res.json(todos);
     } catch (err) {
         res.status(500).json({message: "err.message"});
@@ -57,6 +57,7 @@ const addTask = async (req,res)=> {
         title: req.body.title,
         description: req.body.description,
         completed: req.body.completed,
+        limitDate: req.body.limitDate,
         userId: req.user.id,
     })
     try {
@@ -103,6 +104,7 @@ const updateTask = async (req,res)=>{
             title: req.body.title,
             description: req.body.description,
             completed: req.body.completed,
+            limitDate: req.body.limitDate
         })
 
         res.json(updatedTodo);
