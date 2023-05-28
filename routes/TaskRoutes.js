@@ -16,9 +16,9 @@ router.get('/titlesortasc',auth,getSortedByTitleAscTask);
 
 router.get('/titlesortdesc',auth,getSortedByTitleDescTask);
 
-router.get('/datesortasc',auth,getSortedByDateAscTask);
+router.get('/limitDatesortasc',auth,getSortedByDateAscTask);
 
-router.get('/datesortdesc',auth,getSortedByDateDescTask);
+router.get('/limitDatesortdesc',auth,getSortedByDateDescTask);
 
 router.delete('/:id',auth,deleteTask);
 

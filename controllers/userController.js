@@ -63,7 +63,7 @@ const logIn =  async (req,res)=>{
                 name: nameExists.name,
                 email: nameExists.email
             },process.env.JWT_SECRET,{expiresIn: "1h"});
-            res.json({message: "success",token: token});
+            res.json({message: "success",user:nameExists,token: token});
         }else{
             res.status(400).json({message: "Invalid name or password"});
         }
