@@ -4,7 +4,7 @@ const Todo = require("../model/Task");
 const {getTasks,addTask,deleteTask,updateTask, uncompletedTasks, completedTasks, completeTask,getSortedByDateAscTask,getSortedByDateDescTask,
     getSortedByTitleAscTask,
     getSortedByTitleDescTask,
-    searchTasks,getTotalCompletedTasks,getTotalUncompletedTasks
+    searchTasks,graphstats
 } = require("../controllers/TaskController");
 const {auth} = require("../middleware/authMiddleware");
 
@@ -33,9 +33,7 @@ router.get('/completed',auth,completedTasks);
 
 router.put('/complete/:id',auth,completeTask);
 
-router.get("/uncompletedTotal",auth,getTotalUncompletedTasks);
-
-router.get("/completedTotal",auth,getTotalCompletedTasks);
+router.get("/graphstats",auth,graphstats);
 
 
 module.exports = router;
