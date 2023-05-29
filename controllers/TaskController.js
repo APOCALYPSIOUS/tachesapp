@@ -170,6 +170,27 @@ const completeTask = async (req,res)=>{
     }
 }
 
+const getTotalCompletedTasks = async (req,res)=>{
+    try{
+        const todo = await Todo.find({userId: req.user.id, completed: true}).count();
+        res.json(todo);
+    }catch (err) {
+        res.status(500).json({message: "err.message"});
+    }
+
+}
+
+const getTotalUncompletedTasks = async (req,res)=>{
+    try{
+        const todo = await Todo.find({userId: req.user.id, completed: false}).count();
+        res.json(todo);
+    }catch (err) {
+        res.status(500).json({message: "err.message"});
+    }
+}
+
+
+
 
 module.exports = {
     getTasks,
@@ -184,4 +205,6 @@ module.exports = {
     getSortedByDateDescTask,
     getSortedByTitleDescTask,
     searchTasks,
+    getTotalUncompletedTasks,
+    getTotalCompletedTasks
 }
